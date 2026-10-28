@@ -1,0 +1,54 @@
+openapi: 3.0.3
+
+info:
+  title: Movie Ticket Purchaser
+  description: YAML API for reserving a seat for online movie ticket purchaser, assignment A7 REST API Design
+  version: 1.0.0
+    
+servers:
+  url: https.//movietheater.example
+    
+paths:
+  /reservations/{id}:
+    get:
+      summary: Returns movie theater seat reservations using reservation ID
+      parameters:
+      - name: id
+        in: path
+        required: True
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: Reservation found
+        '404':
+          description: Reservation not found
+          
+    delete:
+      summary: Delete existing movie reservation and free up selected seats so other users can select
+      responses:
+        '204':
+          description: Reservation cancelled
+        '404':
+          description: Reservation not found
+        '409':
+          description: Reservation cannot be cancelled
+
+  /reservations:
+    post:
+      summary: Create reservation for selected seats for specific movie
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                showtime:
+                  type: integer
+                seats:
+                  type: string
+      responses:
+        '201':
+          description: Reservation created
+        '409':
+          description: Selected seats unavailable
